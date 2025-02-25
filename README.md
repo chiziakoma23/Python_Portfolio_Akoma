@@ -5786,7 +5786,7 @@ plt.imshow(flip_img2)
 
 
 
-![png](output_19_1.png)
+![output_19_1](https://github.com/user-attachments/assets/5c3e1a43-2761-4733-98f6-7239a211bf66)
 
 
 
