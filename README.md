@@ -5534,6 +5534,293 @@ for alignment in blast_record.alignments:
     ATTCTGATATCAACGAGCTTAAAATTGCAGCCACGAGGCTTCTTGAACATGCCACCAAGCTCGGTGGAAAGGGCC...
 
 
+## Open CV Pt.1
 
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+```
+
+
+```python
+#import cv library
+import cv2
+```
+
+
+```python
+#Read the image into the Numpy Array. Loads in BGR format
+img = cv2.imread("mushroom.jpg")
+```
+
+
+```python
+type(img)
+```
+
+
+
+
+    numpy.ndarray
+
+
+
+
+```python
+img_wrong = cv2.imread('wrong/path/doesnot/abcdegh.jpg')
+```
+
+
+```python
+#loaded an incorrect image
+type(img_wrong)
+```
+
+
+
+
+    NoneType
+
+
+
+
+```python
+#matplotlib expects a differnt order of colors. Format in BGR
+plt.imshow(img)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fae31c47410>
+
+
+
+
+![png](output_6_1.png)
+
+
+
+```python
+# Converts the image from BGR to RGB
+fix_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+```
+
+
+```python
+# Correct!!
+plt.imshow(fix_img)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fae31061510>
+
+
+
+
+![png](output_8_1.png)
+
+
+
+```python
+#Not grayscale, returns height and weight lol
+img_gray = cv2.imread("mushroom.jpg", cv2. IMREAD_GRAYSCALE)
+img_gray.shape
+```
+
+
+
+
+    (1600, 2560)
+
+
+
+
+```python
+#not gray mate
+plt.imshow(img_gray)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fae303f78d0>
+
+
+
+
+![png](output_10_1.png)
+
+
+
+```python
+# GRAY AT LAST!
+plt.imshow(img_gray, cmap = "gray")
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fae303e6a10>
+
+
+
+
+![png](output_11_1.png)
+
+
+
+```python
+#Resize images
+fix_img.shape
+```
+
+
+
+
+    (1600, 2560, 3)
+
+
+
+
+```python
+#Resizes to 1000x400
+new_img = cv2.resize(fix_img,(1000,400))
+plt.imshow(new_img)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fae303577d0>
+
+
+
+
+![png](output_13_1.png)
+
+
+
+```python
+new_img.shape
+```
+
+
+
+
+    (400, 1000, 3)
+
+
+
+
+```python
+#Scale of image changes by 50%
+w_ratio = 0.5
+h_ratio = 0.5
+
+new_img = cv2.resize(fix_img, (0,0), fix_img, w_ratio, h_ratio)
+```
+
+
+```python
+plt.imshow(new_img)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fae302c8910>
+
+
+
+
+![png](output_16_1.png)
+
+
+
+```python
+new_img.shape
+```
+
+
+
+
+    (800, 1280, 3)
+
+
+
+
+```python
+#Flips image along the vertical axis
+flip_img = cv2.flip(fix_img, 0)
+plt.imshow(flip_img)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fae3023b150>
+
+
+
+
+![png](output_18_1.png)
+
+
+
+```python
+#Flips image along the vertical axis and then reverses it 
+flip_img2 = cv2.flip(fix_img, -1)
+plt.imshow(flip_img2)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fae30218e90>
+
+
+
+
+![png](output_19_1.png)
+
+
+
+```python
+type(fix_img)
+```
+
+
+
+
+    numpy.ndarray
+
+
+
+
+```python
+cv2.imwrite('Mushroom_fixed_image.jpg', fix_img)
+```
+
+
+
+
+    True
+
+
+
+
+```python
+cv2.imwrite('Mushroom_fixed_image.jpg', flip_img)
+```
+
+
+
+
+    True
 
 
