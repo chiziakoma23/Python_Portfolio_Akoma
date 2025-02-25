@@ -5823,4 +5823,256 @@ cv2.imwrite('Mushroom_fixed_image.jpg', flip_img)
 
     True
 
+## Open CV Basics PT. 2
+
+
+```python
+#https://github.com/worklifesg/Python-for-Computer-Vision-with-OpenCV-and-Deep-Learning
+```
+
+
+```python
+import cv2
+import matplotlib.pyplot as plt
+%matplotlib inline
+```
+
+
+```python
+img = cv2.imread("rainbow.jpg")
+```
+
+
+```python
+
+plt.imshow(img)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fbc13fdce10>
+
+
+
+
+![output_3_1](https://github.com/user-attachments/assets/f17f9197-ef9d-4f6c-b2d3-bed6d953fb8c)
+
+
+
+```python
+#Cancels out background colors. Gray scale
+img = cv2.imread('rainbow.jpg', 0)
+```
+
+
+```python
+plt.imshow(img, cmap = 'gray')
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fbc13f0f350>
+
+
+
+
+![output_5_1](https://github.com/user-attachments/assets/3a2026dc-e1fb-49c5-b185-496157a2771b)
+
+
+
+```python
+#Threshold image 255 pixals. Threshold halves that to 127
+ret1, thresh1 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
+```
+
+
+```python
+ret1
+```
+
+
+
+
+    127.0
+
+
+
+
+```python
+plt.imshow(thresh1, cmap = "gray")
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fbc11df8ad0>
+
+
+
+
+![output_8_1](https://github.com/user-attachments/assets/075d53a0-7871-41f8-a1d7-49a9c32c7eca)
+
+
+
+```python
+#Inversed the limits. Truncate threshold
+img2 = cv2.imread('rainbow.jpg', 0)
+ret1, thresh1 = cv2.threshold(img2, 127, 255, cv2. THRESH_TRUNC)
+plt.imshow(thresh1, cmap = "gray")
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fbc11ddbcd0>
+
+
+
+
+![output_9_1](https://github.com/user-attachments/assets/0a150a2c-b8f4-4b99-a7a5-84e2abba33fb)
+
+
+
+```python
+#Almost 3D image
+img3 = cv2. imread('rainbow.jpg', 0)
+ret1, thresh1 = cv2.threshold(img3, 127, 255, cv2.THRESH_TOZERO)
+plt.imshow(thresh1, cmap = "gray")
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fbc11d3f890>
+
+
+
+
+![output_10_1](https://github.com/user-attachments/assets/d0853868-8930-4a84-b5c7-49f78cc24682)
+
+
+
+```python
+img_r = cv2.imread('crossword.jpg', 0)
+plt.imshow(img_r, cmap = 'gray')
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7fbc11cb1910>
+
+
+
+
+![output_11_1](https://github.com/user-attachments/assets/c33c41ca-4fdf-47dd-aacf-9e1976490c2b)
+
+
+
+```python
+def show_pic(img):
+    fig = plt.figure(figsize = (15,15))
+    ax = fig.add_subplot(111)
+    ax.imshow(img, cmap = 'gray')
+```
+
+
+```python
+show_pic(img_r)
+```
+
+
+![output_13_0](https://github.com/user-attachments/assets/17127b7a-a289-4977-ac71-ecdb591e27d0)
+
+
+
+```python
+#No gray just showing black and white. Binary Thresholding
+ret, th1 = cv2.threshold(img, 127, 255, cv2.THRESH_BINARY)
+show_pic(img_r)
+```
+
+
+![output_14_0](https://github.com/user-attachments/assets/97f2c6d5-acb5-43c6-adf9-d9ab2bf9b800)
+
+
+
+```python
+ret, th1 = cv2.threshold(img_r, 127, 255, cv2.THRESH_BINARY)
+show_pic(th1)
+```
+
+
+![output_15_0](https://github.com/user-attachments/assets/d5351870-c08c-4801-99e5-1d141a603793)
+
+
+
+```python
+#changed from 127 to 200 threshold
+ret, th1 = cv2.threshold(img_r, 200, 255, cv2.THRESH_BINARY)
+show_pic(th1)
+```
+
+
+![output_16_0](https://github.com/user-attachments/assets/da043932-62b2-4cc0-a9b6-c07d13108de5)
+
+
+
+```python
+#Adaptive thresholding
+th2 = cv2.adaptiveThreshold(img_r, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 11, 8)
+```
+
+
+```python
+show_pic(th2)
+```
+
+
+![output_18_0](https://github.com/user-attachments/assets/37af6d52-8ded-414e-a511-0fca1d519439)
+
+
+
+```python
+#Blends the two images using weighted addition
+blended = cv2.addWeighted(src1 = th1, alpha = 0.6,
+                          src2 = th2, beta = 0.4, gamma = 0)
+
+show_pic(blended)
+```
+
+
+![output_19_0](https://github.com/user-attachments/assets/16f74f56-c56a-4cc0-a460-68102d478480)
+
+
+
+```python
+blended = cv2.addWeighted(src1 = th1, alpha = 0.6,
+                          src2 = th2, beta = 0.4, gamma = 0)
+
+show_pic(blended)
+```
+
+
+![output_20_0](https://github.com/user-attachments/assets/d346079b-84b4-4484-a2f9-00ffd43db6dc)
+
+
+
+```python
+th3 = cv2.adaptiveThreshold(img_r, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2. THRESH_BINARY, 11, 8)
+
+blended = cv2.addWeighted(src1=th1,alpha=0.6,
+                          src2=th2,beta=0.4,gamma=0)
+
+show_pic(blended)
+```
+
+
+![output_21_0](https://github.com/user-attachments/assets/4526d202-b437-4920-93b9-de8e5fd1c813)
+
+
+## Open CV Basics PT. 3
+
 
