@@ -3397,4 +3397,757 @@ SeqIO.write(records, "rev_comp.fasta", "fasta")
     18
 
 
+## Sequence Alignment
+
+```python
+#https://raw.githubusercontent.com/biopython/biopython/master/Doc/examples/PF05371_seed.sth
+```
+
+
+```python
+from Bio import AlignIO
+```
+
+
+```python
+#Reads alignment file in stockholm format
+alignment = AlignIO.read("PF05371_seed.sth.txt", "stockholm")
+```
+
+
+```python
+print(alignment)
+```
+
+    Alignment with 7 rows and 52 columns
+    AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRL...SKA COATB_BPIKE/30-81
+    AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKL...SRA Q9T0Q8_BPIKE/1-52
+    DGTSTATSYATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRL...SKA COATB_BPI22/32-83
+    AEGDDP---AKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA COATB_BPM13/24-72
+    AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA COATB_BPZJ2/1-49
+    AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA Q9T0Q9_BPFD/1-49
+    FAADDATSQAKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKL...SRA COATB_BPIF1/22-73
+
+
+
+```python
+alignment = AlignIO.read("PF05371_seed.sth.txt", "stockholm")
+```
+
+
+```python
+#Prints Total number of aligned characters
+print("Alignment length %i" % alignment.get_alignment_length())
+```
+
+    Alignment length 52
+
+
+
+```python
+#Looks through the sequence and prints the sequence and id
+for record in alignment:
+    print("%s - %s" % (record.seq, record.id))
+```
+
+    AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRLFKKFSSKA - COATB_BPIKE/30-81
+    AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKLFKKFVSRA - Q9T0Q8_BPIKE/1-52
+    DGTSTATSYATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRLFKKFSSKA - COATB_BPI22/32-83
+    AEGDDP---AKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA - COATB_BPM13/24-72
+    AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFASKA - COATB_BPZJ2/1-49
+    AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA - Q9T0Q9_BPFD/1-49
+    FAADDATSQAKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKLFKKFVSRA - COATB_BPIF1/22-73
+
+
+
+```python
+#checks for the id and references that come from the object
+for record in alignment:
+    if record.dbxrefs:
+        print("%s - %s" % (record.id, record.dbxrefs))
+```
+
+    COATB_BPIKE/30-81 - ['PDB; 1ifl ; 1-52;']
+    COATB_BPM13/24-72 - ['PDB; 2cpb ; 1-49;', 'PDB; 2cps ; 1-49;']
+    Q9T0Q9_BPFD/1-49 - ['PDB; 1nh4 A; 1-49;']
+    COATB_BPIF1/22-73 - ['PDB; 1ifk ; 1-50;']
+
+
+
+```python
+#Prints all annotations for all alignments
+for record in alignment:
+    print(record)
+```
+
+    ID: COATB_BPIKE/30-81
+    Name: COATB_BPIKE
+    Description: COATB_BPIKE/30-81
+    Database cross-references: PDB; 1ifl ; 1-52;
+    Number of features: 0
+    /accession=P03620.1
+    /start=30
+    /end=81
+    Per letter annotation for: secondary_structure
+    Seq('AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRLFKKFSSKA')
+    ID: Q9T0Q8_BPIKE/1-52
+    Name: Q9T0Q8_BPIKE
+    Description: Q9T0Q8_BPIKE/1-52
+    Number of features: 0
+    /accession=Q9T0Q8.1
+    /start=1
+    /end=52
+    Seq('AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKLFKKFVSRA')
+    ID: COATB_BPI22/32-83
+    Name: COATB_BPI22
+    Description: COATB_BPI22/32-83
+    Number of features: 0
+    /accession=P15416.1
+    /start=32
+    /end=83
+    Seq('DGTSTATSYATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRLFKKFSSKA')
+    ID: COATB_BPM13/24-72
+    Name: COATB_BPM13
+    Description: COATB_BPM13/24-72
+    Database cross-references: PDB; 2cpb ; 1-49;, PDB; 2cps ; 1-49;
+    Number of features: 0
+    /accession=P69541.1
+    /start=24
+    /end=72
+    Per letter annotation for: secondary_structure
+    Seq('AEGDDP---AKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA')
+    ID: COATB_BPZJ2/1-49
+    Name: COATB_BPZJ2
+    Description: COATB_BPZJ2/1-49
+    Number of features: 0
+    /accession=P03618.1
+    /start=1
+    /end=49
+    Seq('AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFASKA')
+    ID: Q9T0Q9_BPFD/1-49
+    Name: Q9T0Q9_BPFD
+    Description: Q9T0Q9_BPFD/1-49
+    Database cross-references: PDB; 1nh4 A; 1-49;
+    Number of features: 0
+    /accession=Q9T0Q9.1
+    /start=1
+    /end=49
+    Per letter annotation for: secondary_structure
+    Seq('AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA')
+    ID: COATB_BPIF1/22-73
+    Name: COATB_BPIF1
+    Description: COATB_BPIF1/22-73
+    Database cross-references: PDB; 1ifk ; 1-50;
+    Number of features: 0
+    /accession=P03619.2
+    /start=22
+    /end=73
+    Per letter annotation for: secondary_structure
+    Seq('FAADDATSQAKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKLFKKFVSRA')
+
+
+
+```python
+from Bio.Seq import Seq 
+from Bio.SeqRecord import SeqRecord 
+from Bio.Align import MultipleSeqAlignment
+
+```
+
+
+```python
+#Creating alignment files manually
+align1 = MultipleSeqAlignment (
+...     [   
+...         SeqRecord(Seq("ACTGCTAGCTAG"), id="Alpha"),
+...         SeqRecord(Seq("ACT-CTAGCTAG"), id="Beta"),
+...         SeqRecord(Seq("ACTGCTAGDTAG"), id="Gamma"),
+...     ]
+... )
+>>> align2 = MultipleSeqAlignment(
+...    [    
+...         SeqRecord(Seq("GTCAGC-AG"), id="Delta"),
+...         SeqRecord(Seq("GACAGCTAG"), id="Epsilon"),
+...         SeqRecord(Seq("GTCAGCTAG"), id="Zeta"),
+...    ]
+... )
+>>> align3 = MultipleSeqAlignment(
+...    [
+...        SeqRecord(Seq("ACTAGTACAGCTG"), id="Eta"),
+...        SeqRecord(Seq("ACTAGTACAGCT-"), id="Theta"),
+...        SeqRecord(Seq("-CTACTACAGGTG"), id="Iota"),
+...    ]
+... )
+```
+
+
+```python
+my_alignments = [align1, align2, align3]
+```
+
+
+```python
+my_alignments
+```
+
+
+
+
+    [<<class 'Bio.Align.MultipleSeqAlignment'> instance (3 records of length 12) at 7f3e182f3750>,
+     <<class 'Bio.Align.MultipleSeqAlignment'> instance (3 records of length 9) at 7f3e182f3650>,
+     <<class 'Bio.Align.MultipleSeqAlignment'> instance (3 records of length 13) at 7f3e17f08910>]
+
+
+
+
+```python
+#Writes alignments to phylip file
+from Bio import AlignIO
+AlignIO.write(my_alignments, "my_example.phy", "phylip")
+```
+
+
+
+
+    3
+
+
+
+
+```python
+alignments = AlignIO.parse("my_example.phy", "phylip")
+```
+
+
+```python
+#Reads the phylip file and prints alignments
+for alignments in alignments:
+    print(alignment)
+    print()
+```
+
+    Alignment with 7 rows and 52 columns
+    AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRL...SKA COATB_BPIKE/30-81
+    AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKL...SRA Q9T0Q8_BPIKE/1-52
+    DGTSTATSYATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRL...SKA COATB_BPI22/32-83
+    AEGDDP---AKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA COATB_BPM13/24-72
+    AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA COATB_BPZJ2/1-49
+    AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA Q9T0Q9_BPFD/1-49
+    FAADDATSQAKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKL...SRA COATB_BPIF1/22-73
+    
+    Alignment with 7 rows and 52 columns
+    AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRL...SKA COATB_BPIKE/30-81
+    AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKL...SRA Q9T0Q8_BPIKE/1-52
+    DGTSTATSYATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRL...SKA COATB_BPI22/32-83
+    AEGDDP---AKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA COATB_BPM13/24-72
+    AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA COATB_BPZJ2/1-49
+    AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA Q9T0Q9_BPFD/1-49
+    FAADDATSQAKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKL...SRA COATB_BPIF1/22-73
+    
+    Alignment with 7 rows and 52 columns
+    AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRL...SKA COATB_BPIKE/30-81
+    AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKL...SRA Q9T0Q8_BPIKE/1-52
+    DGTSTATSYATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRL...SKA COATB_BPI22/32-83
+    AEGDDP---AKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA COATB_BPM13/24-72
+    AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA COATB_BPZJ2/1-49
+    AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA Q9T0Q9_BPFD/1-49
+    FAADDATSQAKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKL...SRA COATB_BPIF1/22-73
+    
+
+
+
+```python
+#Turn alignments to list
+alignments = list(AlignIO.parse("my_example.phy", "phylip"))
+```
+
+
+```python
+last_align = alignments[-1]
+```
+
+
+```python
+#Prints last alignment
+print(last_align)
+```
+
+    Alignment with 3 rows and 13 columns
+    ACTAGTACAGCTG Eta
+    ACTAGTACAGCT- Theta
+    -CTACTACAGGTG Iota
+
+
+
+```python
+first_align = alignments[0]
+```
+
+
+```python
+#Print first align
+print(first_align)
+```
+
+    Alignment with 3 rows and 12 columns
+    ACTGCTAGCTAG Alpha
+    ACT-CTAGCTAG Beta
+    ACTGCTAGDTAG Gamma
+
+
+
+```python
+from Bio import AlignIO
+```
+
+
+```python
+#Converts stakholm format to clustal format
+count = AlignIO.convert("PF05371_seed.sth.txt", "stockholm", "PF05371_seed.aln", "clustal")
+```
+
+
+```python
+#Tells how many alignments have been converted
+print("Converted %i alignments" % count)
+```
+
+    Converted 1 alignments
+
+
+
+```python
+alignments = AlignIO.parse("PF05371_seed.sth.txt", "stockholm")
+```
+
+
+```python
+count = AlignIO.write(alignments, "PF05371_seed.aln", "clustal")
+```
+
+
+```python
+#Another way to see the alignments converted
+print("Converted %i alignments" % count)
+```
+
+    Converted 1 alignments
+
+
+
+```python
+#Creates Phylip format
+AlignIO.convert("PF05371_seed.sth.txt", "stockholm", "PF05371_seed.phy", "phylip")
+```
+
+
+
+
+    1
+
+
+
+
+```python
+AlignIO.convert("PF05371_seed.sth.txt", "stockholm", "PF05371_seed.phy", "phylip-relaxed")
+```
+
+
+
+
+    1
+
+
+
+
+```python
+#Manipulate the names of files
+alignment = AlignIO.read("PF05371_seed.sth.txt", "stockholm")
+name_mapping = {}
+for i, record in enumerate(alignment):
+    name_mapping[i] = record.id
+    record.id = "seq%i" % i
+```
+
+
+```python
+print(name_mapping)
+```
+
+    {0: 'COATB_BPIKE/30-81', 1: 'Q9T0Q8_BPIKE/1-52', 2: 'COATB_BPI22/32-83', 3: 'COATB_BPM13/24-72', 4: 'COATB_BPZJ2/1-49', 5: 'Q9T0Q9_BPFD/1-49', 6: 'COATB_BPIF1/22-73'}
+
+
+
+```python
+#Adds sequence number before file
+AlignIO.write([alignment], "PF05371_seed.phy", "phylip")
+```
+
+
+
+
+    1
+
+
+
+
+```python
+#Slicing Alignments
+alignment = AlignIO.read("PF05371_seed.sth.txt", "stockholm")
+```
+
+
+```python
+#Number of rows
+print("Number of rows: %i" % len(alignment))
+```
+
+    Number of rows: 7
+
+
+
+```python
+for record in alignment:
+    print("%s - %s" % (record.seq, record.id))
+```
+
+    AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRLFKKFSSKA - COATB_BPIKE/30-81
+    AEPNAATNYATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKLFKKFVSRA - Q9T0Q8_BPIKE/1-52
+    DGTSTATSYATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRLFKKFSSKA - COATB_BPI22/32-83
+    AEGDDP---AKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA - COATB_BPM13/24-72
+    AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFASKA - COATB_BPZJ2/1-49
+    AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA - Q9T0Q9_BPFD/1-49
+    FAADDATSQAKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKLFKKFVSRA - COATB_BPIF1/22-73
+
+
+
+```python
+#Prints subset of alignments
+print(alignment[3:7])
+```
+
+    Alignment with 4 rows and 52 columns
+    AEGDDP---AKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA COATB_BPM13/24-72
+    AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA COATB_BPZJ2/1-49
+    AEGDDP---AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKL...SKA Q9T0Q9_BPFD/1-49
+    FAADDATSQAKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKL...SRA COATB_BPIF1/22-73
+
+
+
+```python
+#Prints letter from column and row 
+print(alignment[2, 6])
+```
+
+    T
+
+
+
+```python
+print(alignment[2].seq[6])
+```
+
+    T
+
+
+
+```python
+#Prints column
+print(alignment[:, 6])
+```
+
+    TTT---T
+
+
+
+```python
+#Specific alignments
+print(alignment[3:6, :6])
+```
+
+    Alignment with 3 rows and 6 columns
+    AEGDDP COATB_BPM13/24-72
+    AEGDDP COATB_BPZJ2/1-49
+    AEGDDP Q9T0Q9_BPFD/1-49
+
+
+
+```python
+#Take all the alignment from the 6 rows
+print(alignment[:, :6])
+```
+
+    Alignment with 7 rows and 6 columns
+    AEPNAA COATB_BPIKE/30-81
+    AEPNAA Q9T0Q8_BPIKE/1-52
+    DGTSTA COATB_BPI22/32-83
+    AEGDDP COATB_BPM13/24-72
+    AEGDDP COATB_BPZJ2/1-49
+    AEGDDP Q9T0Q9_BPFD/1-49
+    FAADDA COATB_BPIF1/22-73
+
+
+
+```python
+#Useful in removing multiple alignments at once
+print(alignment[:, 6:9])
+```
+
+    Alignment with 7 rows and 3 columns
+    TNY COATB_BPIKE/30-81
+    TNY Q9T0Q8_BPIKE/1-52
+    TSY COATB_BPI22/32-83
+    --- COATB_BPM13/24-72
+    --- COATB_BPZJ2/1-49
+    --- Q9T0Q9_BPFD/1-49
+    TSQ COATB_BPIF1/22-73
+
+
+
+```python
+#Select which colmns you want to select precisely
+print(alignment[:, 9:])
+```
+
+    Alignment with 7 rows and 43 columns
+    ATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRLFKKFSSKA COATB_BPIKE/30-81
+    ATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKLFKKFVSRA Q9T0Q8_BPIKE/1-52
+    ATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRLFKKFSSKA COATB_BPI22/32-83
+    AKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA COATB_BPM13/24-72
+    AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFASKA COATB_BPZJ2/1-49
+    AKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA Q9T0Q9_BPFD/1-49
+    AKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKLFKKFVSRA COATB_BPIF1/22-73
+
+
+
+```python
+edited = alignment[:, :6] + alignment[:, 9:]
+```
+
+
+```python
+print(edited)
+```
+
+    Alignment with 7 rows and 49 columns
+    AEPNAAATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRLFKKFSSKA COATB_BPIKE/30-81
+    AEPNAAATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKLFKKFVSRA Q9T0Q8_BPIKE/1-52
+    DGTSTAATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRLFKKFSSKA COATB_BPI22/32-83
+    AEGDDPAKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA COATB_BPM13/24-72
+    AEGDDPAKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFASKA COATB_BPZJ2/1-49
+    AEGDDPAKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA Q9T0Q9_BPFD/1-49
+    FAADDAAKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKLFKKFVSRA COATB_BPIF1/22-73
+
+
+
+```python
+edited.sort()
+```
+
+
+```python
+#Sorts by id
+print(edited)
+```
+
+    Alignment with 7 rows and 49 columns
+    DGTSTAATEAMNSLKTQATDLIDQTWPVVTSVAVAGLAIRLFKKFSSKA COATB_BPI22/32-83
+    FAADDAAKAAFDSLTAQATEMSGYAWALVVLVVGATVGIKLFKKFVSRA COATB_BPIF1/22-73
+    AEPNAAATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIRLFKKFSSKA COATB_BPIKE/30-81
+    AEGDDPAKAAFNSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA COATB_BPM13/24-72
+    AEGDDPAKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFASKA COATB_BPZJ2/1-49
+    AEPNAAATEAMDSLKTQAIDLISQTWPVVTTVVVAGLVIKLFKKFVSRA Q9T0Q8_BPIKE/1-52
+    AEGDDPAKAAFDSLQASATEYIGYAWAMVVVIVGATIGIKLFKKFTSKA Q9T0Q9_BPFD/1-49
+
+
+
+```python
+from Bio.Seq import Seq
+```
+
+
+```python
+from Bio.SeqRecord import SeqRecord
+```
+
+
+```python
+from Bio.Align import MultipleSeqAlignment
+```
+
+
+```python
+#Creates sequence alignments for multiple
+alignment = MultipleSeqAlignment(
+    [
+        SeqRecord (Seq("ACTCCTA"), id="seq1"), 
+        SeqRecord (Seq("AAT-CTA"), id="seq2"), 
+        SeqRecord (Seq("CCTACT-"), id="seq3"), 
+        SeqRecord (Seq("TCTCCTC"), id="seq4"),
+    ]
+)
+```
+print(alignment)
+
+```python
+substitutions = alignment.substitutions
+```
+
+
+```python
+print(substitutions)
+```
+
+        A    C    T
+    A 2.0  4.5  1.0
+    C 4.5 10.0  0.5
+    T 1.0  0.5 12.0
+    
+
+
+
+```python
+m = substitutions.select("ATCG")
+```
+
+
+```python
+print(m)
+```
+
+        A    T    C   G
+    A 2.0  1.0  4.5 0.0
+    T 1.0 12.0  0.5 0.0
+    C 4.5  0.5 10.0 0.0
+    G 0.0  0.0  0.0 0.0
+    
+
+
+
+```python
+#Added another substitution letter
+m = substitutions.select("ACTG")
+```
+
+
+```python
+print(m)
+```
+
+        A    C    T   G
+    A 2.0  4.5  1.0 0.0
+    C 4.5 10.0  0.5 0.0
+    T 1.0  0.5 12.0 0.0
+    G 0.0  0.0  0.0 0.0
+    
+
+
+
+```python
+import Bio.Align.Applications
+```
+
+
+```python
+#Directory for aligning sequences
+dir(Bio.Align.Applications)
+```
+
+
+
+
+    ['ClustalOmegaCommandline',
+     'ClustalwCommandline',
+     'DialignCommandline',
+     'MSAProbsCommandline',
+     'MafftCommandline',
+     'MuscleCommandline',
+     'PrankCommandline',
+     'ProbconsCommandline',
+     'TCoffeeCommandline',
+     '_ClustalOmega',
+     '_Clustalw',
+     '_Dialign',
+     '_MSAProbs',
+     '_Mafft',
+     '_Muscle',
+     '_Prank',
+     '_Probcons',
+     '_TCoffee',
+     '__all__',
+     '__builtins__',
+     '__cached__',
+     '__doc__',
+     '__file__',
+     '__loader__',
+     '__name__',
+     '__package__',
+     '__path__',
+     '__spec__']
+
+
+
+
+```python
+#Popular command line tool for MSA. Graphical
+from Bio.Align.Applications import ClustalwCommandline
+```
+
+
+```python
+from Bio import AlignIO
+```
+
+
+```python
+#Reads clustal alignment
+align = AlignIO.read("opuntia.aln", "clustal")
+```
+
+
+```python
+print(align)
+```
+
+    Alignment with 7 rows and 906 columns
+    TATACATTAAAGAAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273285|gb|AF191659.1|AF191
+    TATACATTAAAGAAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273284|gb|AF191658.1|AF191
+    TATACATTAAAGAAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273287|gb|AF191661.1|AF191
+    TATACATAAAAGAAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273286|gb|AF191660.1|AF191
+    TATACATTAAAGGAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273290|gb|AF191664.1|AF191
+    TATACATTAAAGGAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273289|gb|AF191663.1|AF191
+    TATACATTAAAGGAGGGGGATGCGGATAAATGGAAAGGCGAAAG...AGA gi|6273291|gb|AF191665.1|AF191
+
+
+
+```python
+from Bio import Phylo
+```
+
+
+```python
+tree = Phylo.read("opuntia.dnd", "newick")
+```
+
+
+```python
+#Reads and prints a ASCII representation of a phylogenetic tree
+Phylo.draw_ascii(tree)
+```
+
+                                 _______________ gi|6273291|gb|AF191665.1|AF191665
+      __________________________|
+     |                          |   ______ gi|6273290|gb|AF191664.1|AF191664
+     |                          |__|
+     |                             |_____ gi|6273289|gb|AF191663.1|AF191663
+     |
+    _|_________________ gi|6273287|gb|AF191661.1|AF191661
+     |
+     |__________ gi|6273286|gb|AF191660.1|AF191660
+     |
+     |    __ gi|6273285|gb|AF191659.1|AF191659
+     |___|
+         | gi|6273284|gb|AF191658.1|AF191658
+    
+
 
