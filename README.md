@@ -5599,7 +5599,7 @@ plt.imshow(img)
 
 
 
-![png](output_6_1.png)
+![output_6_1](https://github.com/user-attachments/assets/3e4166b6-cf54-41b6-8d8e-6437feece637)
 
 
 
@@ -5622,7 +5622,7 @@ plt.imshow(fix_img)
 
 
 
-![png](output_8_1.png)
+![output_8_1](https://github.com/user-attachments/assets/d569b784-7efe-4ee7-8906-bc9d3684a855)
 
 
 
@@ -5653,7 +5653,7 @@ plt.imshow(img_gray)
 
 
 
-![png](output_10_1.png)
+![output_10_1](https://github.com/user-attachments/assets/a16ae4f0-301b-45fd-9168-a4be42752c58)
 
 
 
@@ -5670,7 +5670,7 @@ plt.imshow(img_gray, cmap = "gray")
 
 
 
-![png](output_11_1.png)
+![output_11_1](https://github.com/user-attachments/assets/1ada226a-360b-49e1-b381-d326e32dcf08)
 
 
 
@@ -5700,8 +5700,8 @@ plt.imshow(new_img)
 
 
 
+![output_13_1](https://github.com/user-attachments/assets/f82d0454-26b3-4219-8eaf-689df8072540)
 
-![png](output_13_1.png)
 
 
 
@@ -5738,7 +5738,7 @@ plt.imshow(new_img)
 
 
 
-![png](output_16_1.png)
+![output_16_1](https://github.com/user-attachments/assets/391c9f4a-7b80-446c-98da-dc8c452f827d)
 
 
 
@@ -5768,7 +5768,7 @@ plt.imshow(flip_img)
 
 
 
-![png](output_18_1.png)
+![output_18_1](https://github.com/user-attachments/assets/47f3e609-11b7-40b3-9009-249e250da9ce)
 
 
 
