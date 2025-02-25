@@ -4828,5 +4828,267 @@ aligner.score(target, query, strand = "+")
 
     3.3
 
+## Challenger 1: TP53
+
+```python
+from Bio.Blast import NCBIWWW
+```
+
+
+```python
+NCBIWWW.email = "chiziakoma@gmail.com"
+```
+
+
+```python
+from Bio import SeqIO
+```
+
+
+```python
+record = SeqIO.read("TP53.fasta", format = "fasta")
+```
+
+
+```python
+print(record)
+```
+
+    ID: NC_000017.11:c7687490-7668421
+    Name: NC_000017.11:c7687490-7668421
+    Description: NC_000017.11:c7687490-7668421 Homo sapiens chromosome 17, GRCh38.p14 Primary Assembly
+    Number of features: 0
+    Seq('CTCAAAAGTCTAGAGCCACCGTCCAGGGAGCAGGTAGCTGCTGGGCTCCGGGGA...CCA')
+
+
+
+```python
+result_handle = NCBIWWW.qblast("blastn", "nt", record.seq)
+```
+
+
+```python
+with open("chizitp53_blast.xml", "w") as out_handle:
+    out_handle.write(result_handle.read())
+result_handle.close()
+
+```
+
+
+```python
+from Bio.Blast import NCBIXML
+```
+
+
+```python
+result_handle = open("chizitp53_blast.xml")
+```
+
+
+```python
+blast_record = NCBIXML.read(result_handle)
+```
+
+
+```python
+E_VALUE_THRESH = 0.04
+```
+
+
+```python
+for alignment in blast_record.alignments:
+    for hsp in alignment.hsps:
+        if hsp.expect < E_VALUE_THRESH:
+            print("****ALIGHTMENT****")
+            print("sequence:", alignment.title)
+            print("length:", alignment.length)
+            print("e value:", hsp.expect)
+            print(hsp.query[0:75] + "...")
+            print(hsp.match[0:75] + "...")
+            print(hsp.sbjct[0:75] + "...")
+```
+
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    CTCAAAAGTCTAGAGCCACCGTCCAGGGAGCAGGTAGCTGCTGGGCTCCGGGGACACTTTGCGTTCGGGCTGGGA...
+    |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||...
+    CTCAAAAGTCTAGAGCCACCGTCCAGGGAGCAGGTAGCTGCTGGGCTCCGGGGACACTTTGCGTTCGGGCTGGGA...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    GCCGGGCGCGGTGGCTCACGCCTGTAATGCCAGCACTTTGGGAGGCCTAGGCGGGCGGATCAC--GAGGTCAGGA...
+    ||| |||||||||||||||||||||||| |||||| ||||||   || ||| |||| ||||||  ||||||||||...
+    GCCAGGCGCGGTGGCTCACGCCTGTAATCCCAGCATTTTGGGTA-CCGAGGTGGGCAGATCACTTGAGGTCAGGA...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    GGCCGGGTGCGGTGGCTCAGGCCTGTAATCCCAGCACTTTGGGAAGCCGAGACGGGTGGATCACGAGGTCAGGAG...
+    ||| |||| |||||||||| |||| ||||||||||| ||||||| || ||| |||||||||||||||||||||||...
+    GGCTGGGTACGGTGGCTCATGCCTATAATCCCAGCATTTTGGGAGGCTGAGGCGGGTGGATCACGAGGTCAGGAG...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    GCCGGGCGCGGTGGCTCACGCCTGTAATGCCAGCACTTTGGGAGGCCTAGGCGGGCGGATCACGAGGTCAGGAGA...
+    ||||||||||||| |||||||||||||| |||||||||||||||||| ||| |||| ||||||||||||||||||...
+    GCCGGGCGCGGTGACTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGAGGGCAGATCACGAGGTCAGGAGA...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    GTGGCTCAGGCCTGTAATCCCAGCACTTTGGGAAGCCGAGACGGGTGGATCAC--GAGGTCAGGAGATCGAGACC...
+    |||||| | ||||||||||||| |||||||||| || ||  || |  |||||   ||||||| ||| ||||||||...
+    GTGGCTTATGCCTGTAATCCCACCACTTTGGGAGGCTGAAGCGAGCAGATCATCTGAGGTCAAGAGTTCGAGACC...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    CGATGTCTCACGCCTATAATCCCAGCACTTTGGGAGGCCGAGGTGGGCAGATCACCTGAGGTCTGGAGTTGGAGA...
+    || || || |||||| |||||||||||||||||||||| ||| |||||||| ||| ||||| | ||||||  | |...
+    CGGTGGCTTACGCCTGTAATCCCAGCACTTTGGGAGGCTGAGATGGGCAGAACACATGAGGCCAGGAGTTCAAAA...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    CGGTGGCTCAGGCCTGTAATCCCAGCACTTTGGGAAGCCGAGACGGGTGGATCACGAGGTCAGGAGATCGAGACC...
+    ||||||||||  || |||||||||||||||| || ||| ||| ||||   |||||||||||||||| ||||||||...
+    CGGTGGCTCACACCAGTAATCCCAGCACTTTCGGGAGCTGAGGCGGGCAAATCACGAGGTCAGGAGTTCGAGACC...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    GGCCGGGTGCGGTGGCTCAGGCCTGTAATCCCAGCACTTTGGGAAGCCGAGACGGGTGGATCAC--GAGGTCAGG...
+    |||| | || |||||||||  ||||||||||||||| ||||||| || |||  |||||||||||  |||||||||...
+    GGCCAGATGTGGTGGCTCACACCTGTAATCCCAGCATTTTGGGAGGCTGAGGTGGGTGGATCACCTGAGGTCAGG...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    TTTTTTTTTTTTTGGAGACAGAGTCTCACTCTGTCACCCAGGCTGGAGTGCAGTGGCGGGATCTCGGCTCACTGC...
+    ||||||||||||| ||||  |||||||||||||| ||||||||||||||||||||| | ||||| ||||||||||...
+    TTTTTTTTTTTTTTGAGATGGAGTCTCACTCTGTAACCCAGGCTGGAGTGCAGTGGTGCGATCTTGGCTCACTGC...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    CTCACGCCTATAATCCCAGCACTTTGGGAGGCCGAGGTGGGCAGATCACCTGAGGTCTGGAGTTGGAGACCAGCC...
+    |||| ||||||||||||||||||||||||||| |||| ||||||||||| ||||||| ||||||  | ||||| |...
+    CTCATGCCTATAATCCCAGCACTTTGGGAGGCTGAGGCGGGCAGATCACTTGAGGTCAGGAGTTCAAAACCAGGC...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    AAGAAAAAGAAATAATGAGGGCCGGGTGCGGTGGCTCAGGCCTGTAATCCCAGCACTTTGGGAAGCCGAGACGGG...
+    || ||||| ||| ||  | ||||||||||||||||||| ||||||| || ||||||||||||| ||||||  |||...
+    AAAAAAAAAAAAAAAAAAAGGCCGGGTGCGGTGGCTCACGCCTGTAGTCGCAGCACTTTGGGAGGCCGAGGTGGG...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    GCCGGGCGCGGTGGCTCACGCCTGTAATGCCAGCACTTTGGGAGGCCTAGGCGGGCGGATCACGAGGTCAGGAGA...
+    ||||||||| |||||||| ||||||||| |||||||||||||||||| ||| |||| |||||| |||||||||||...
+    GCCGGGCGCAGTGGCTCATGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGTGGGCAGATCACAAGGTCAGGAGA...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    GCCGGGCGCGGTGGCTCACGCCTGTAATGCCAGCACTTTGGGAGGCCTAGGCGGGCGGATCACGAGGTCAGGAGA...
+    || ||| ||||||||||||||||||||| |||||||||||||||||  ||||||| |||||||||||||||||| ...
+    GCTGGGTGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCTGAGGCGGGTGGATCACGAGGTCAGGAGT...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    GCCGGGCGCGGTGGCTCACGCCTGTAATGCCAGCACTTTGGGAGGCCTAGGCGGGCGGATCACGAGGTCAGGAGA...
+    |||||||||||||||||||||||||||| |||||||||||||||||| |||| ||||| ||||||||||||||||...
+    GCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCAGGCGGGTCACGAGGTCAGGAGA...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    GCCGGGCGCGGTGGCTCACGCCTGTAATGCCAGCACTTTGGGAGGCCTAGGCGGGCGGATCACGAGGTCAGGAGA...
+    |||||||||||| ||||||||||||||| |||||||||||||||||| |||| || |||||||||||||||||||...
+    GCCGGGCGCGGTTGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCAGGTGGATCACGAGGTCAGGAGA...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    GTGGCTCATGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGTGGGTGGATCACCTGAGGTCAGGAGTTCAACACC...
+    |||||||| ||||||||||||| ||||||||||||| ||||  ||||||||||||||||||| |||||| | || ...
+    GTGGCTCACGCCTGTAATCCCAACACTTTGGGAGGCTGAGGAAGGTGGATCACCTGAGGTCAAGAGTTCGAGACA...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    GCCGGGCGCGGTGGCTCACGCCTGTAATGCCAGCACTTTGGGAGGCCTAGGCGGGCGGATCACGAGGTCAGGAGA...
+    || ||| ||||||||||||||||||||| |||||||||||||||||  ||||||| |||||||||||||||||| ...
+    GCTGGGTGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCTGAGGCGGGTGGATCACGAGGTCAGGAGT...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    AGGCCAGTCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCTGAGGCAGGCAGATCACTTGAGGTCAG...
+    ||||||   | ||||||||||||||||||||||||||||||||||||||||||  ||  |||||| |||||||||...
+    AGGCCATGGGTGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCTGAGGTGGGAGGATCACCTGAGGTCAG...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    AAAATT---GGCCGGGTGCAGTGGCTCACACCTGTAATCCCAGCACTTTGGGAGTCGGAGGCGGGAGGATCACCT...
+    ||||||   ||| |||  ||| |||||||| ||||||||||||||||||||||| | ||||||||   |||||||...
+    AAAATTTCAGGCTGGGCACAGCGGCTCACAACTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGCA-ATCACCT...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    GGCCGGGTGCGGTGGCTCAGGCCTGTAATCCCAGCACTTTGGGAAGCCGAGACGGGTGGATCACGAGGTCAGGAG...
+    ||||||| || |||||||| |||||||||||||||||||||||| ||| ||  |||  |||||| ||||||||||...
+    GGCCGGGCGCAGTGGCTCATGCCTGTAATCCCAGCACTTTGGGAGGCCAAGGTGGGCAGATCACAAGGTCAGGAG...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    GCCGGGCGCGGTGGCTCACGCCTGTAATGCCAGCACTTTGGGAGGCCTAGGCGGGCGGATCAC--GAGGTCAGGA...
+    |||||||| |||||||||| |||||||| |||||||||||||| ||  ||| |||||||||||  |||||  |||...
+    GCCGGGCGTGGTGGCTCACACCTGTAATCCCAGCACTTTGGGAAGCTGAGGTGGGCGGATCACCTGAGGTTGGGA...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    GTGGCTCAGGCCTGTAATCCCAGCACTTTGGGAAGCCGAGACGGGTGGATCACGAGGTCAGGAGATCGAGACCAT...
+    |||||| | |||| ||||||||||| |||||||   ||||  |||||||||||  |||||||||  | |||||| ...
+    GTGGCTTACGCCTATAATCCCAGCATTTTGGGAGATCGAGGTGGGTGGATCACACGGTCAGGAGTGCAAGACCAG...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    GCCGGGCGCGGTGGCTCACGCCTGTAATGCCAGCACTTTGGGAGGCCTAGGCGGGCGGATCACGAGGTCAGGAGA...
+    || |||  |||||||||| ||||||||| ||||||||||| |||||| ||| |||||||||| || |||| || |...
+    GCAGGGGTCGGTGGCTCATGCCTGTAATCCCAGCACTTTGAGAGGCCAAGGTGGGCGGATCAGGAAGTCAAGACA...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    AGAAAAAGAAATAATGAGGGCCGGGTGCGGTGGCTCAGGCCTGTAATCCCAGCACTTTGGGAAGCCGAGACGGGT...
+    ||| ||| ||  |||  | || ||| || ||||||     || | ||||||||||||||||| || |||  ||| ...
+    AGATAAATAAGAAATAGGAGCTGGGCGCAGTGGCTTTCCACTATGATCCCAGCACTTTGGGATGCTGAGCTGGGC...
+    ****ALIGHTMENT****
+    sequence: gi|2108243285|gb|OK040661.1| Mus musculus musculus strain C57BL/10 chromosome 17 sequence >gi|2108243294|gb|OK040669.1| Mus musculus musculus strain O20 chromosome 17 sequence
+    length: 16711841
+    e value: 0.0
+    GCCGGGCGCGGTGGCTCACGCCTGTAATGCCAGCACTTTGGGAGGCCTAGGCGGGCGGATCACGAGGTCAGGAGA...
+    |||||||||||||||||||||||||||| |||||||||||||||||| |||||||||||||||||||||||||||...
+    GCCGGGCGCGGTGGCTCACGCCTGTAATCCCAGCACTTTGGGAGGCCGAGGCGGGCGGATCACGAGGTCAGGAGA...
+   
+  
+
+```python
+# The E Value when compared to Chimpanzee is 2.67257e-135.
+```
+
 
 
