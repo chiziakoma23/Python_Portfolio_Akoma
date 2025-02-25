@@ -4150,4 +4150,683 @@ Phylo.draw_ascii(tree)
          | gi|6273284|gb|AF191658.1|AF191658
     
 
+## Pairwise Alignment
+
+```python
+from Bio import Align
+```
+
+
+```python
+aligner = Align.PairwiseAligner()
+```
+
+
+```python
+aligner = Align.PairwiseAligner(match_score = 1.0)
+```
+
+
+```python
+#Creating Target Sequence
+target = "GAACT"
+```
+
+
+```python
+query = "GAT"
+```
+
+
+```python
+#Alignment Score
+score = aligner.score(target, query)
+```
+
+
+```python
+score
+```
+
+
+
+
+    3.0
+
+
+
+
+```python
+alignments = aligner.align(target, query)
+```
+
+
+```python
+#Some possible alignments
+for alignment in alignments:
+    print(alignment)
+```
+
+    target            0 GAACT 5
+                      0 ||--| 5
+    query             0 GA--T 3
+    
+    target            0 GAACT 5
+                      0 |-|-| 5
+    query             0 G-A-T 3
+    
+
+
+
+```python
+aligner.mode = "local"
+```
+
+
+```python
+target = "AGAACTC"
+```
+
+
+```python
+query = "GAACT"
+```
+
+
+```python
+score = aligner.score(target, query)
+```
+
+
+```python
+score
+```
+
+
+
+
+    5.0
+
+
+
+
+```python
+alignments = aligner.align(target, query)
+```
+
+
+```python
+#Best local alignments
+for alignment in alignments:
+    print(alignment)
+```
+
+    target            1 GAACT 6
+                      0 ||||| 5
+    query             0 GAACT 5
+    
+
+
+
+```python
+#Prints aligners parameters
+print(aligner)
+```
+
+    Pairwise sequence aligner with parameters
+      wildcard: None
+      match_score: 1.000000
+      mismatch_score: 0.000000
+      target_internal_open_gap_score: 0.000000
+      target_internal_extend_gap_score: 0.000000
+      target_left_open_gap_score: 0.000000
+      target_left_extend_gap_score: 0.000000
+      target_right_open_gap_score: 0.000000
+      target_right_extend_gap_score: 0.000000
+      query_internal_open_gap_score: 0.000000
+      query_internal_extend_gap_score: 0.000000
+      query_left_open_gap_score: 0.000000
+      query_left_extend_gap_score: 0.000000
+      query_right_open_gap_score: 0.000000
+      query_right_extend_gap_score: 0.000000
+      mode: local
+    
+
+
+
+```python
+aligner.algorithm
+```
+
+
+
+
+    'Smith-Waterman'
+
+
+
+
+```python
+#Shows the aligner epsilon value. Significance score
+aligner.epsilon
+```
+
+
+
+
+    1e-06
+
+
+
+
+```python
+from Bio import Align
+```
+
+
+```python
+aligner = Align.PairwiseAligner()
+```
+
+
+```python
+target = "GAACT"
+```
+
+
+```python
+query = "GAT"
+```
+
+
+```python
+alignments = aligner.align(target, query)
+```
+
+
+```python
+alignment = alignments[0]
+```
+
+
+```python
+alignment 
+```
+
+
+
+
+    <Alignment object (2 rows x 5 columns) at 0x7fe0d833e990>
+
+
+
+
+```python
+alignment.score
+```
+
+
+
+
+    3.0
+
+
+
+
+```python
+alignment.target
+```
+
+
+
+
+    'GAACT'
+
+
+
+
+```python
+alignment.query
+```
+
+
+
+
+    'GAT'
+
+
+
+
+```python
+print(alignment)
+```
+
+    target            0 GAACT 5
+                      0 ||--| 5
+    query             0 GA--T 3
+    
+
+
+
+```python
+alignment.coordinates
+```
+
+
+
+
+    array([[0, 2, 4, 5],
+           [0, 2, 2, 3]])
+
+
+
+
+```python
+len(alignments)
+```
+
+
+
+
+    2
+
+
+
+
+```python
+alignment.shape
+```
+
+
+
+
+    (2, 5)
+
+
+
+
+```python
+aligner.mode = "local"
+```
+
+
+```python
+local_alignments = aligner.align("TGAACT", "GAC")
+```
+
+
+```python
+local_alignment = local_alignments[0]
+```
+
+
+```python
+print(local_alignment)
+```
+
+    target            1 GAAC 5
+                      0 ||-| 4
+    query             0 GA-C 3
+    
+
+
+
+```python
+local_alignment.shape
+```
+
+
+
+
+    (2, 4)
+
+
+
+
+```python
+aligner.mode = "global"
+```
+
+
+```python
+aligner = Align.PairwiseAligner(match = 1.0, mismatch_score = -10)
+```
+
+
+```python
+print(aligner)
+```
+
+    Pairwise sequence aligner with parameters
+      wildcard: None
+      match_score: 1.000000
+      mismatch_score: -10.000000
+      target_internal_open_gap_score: 0.000000
+      target_internal_extend_gap_score: 0.000000
+      target_left_open_gap_score: 0.000000
+      target_left_extend_gap_score: 0.000000
+      target_right_open_gap_score: 0.000000
+      target_right_extend_gap_score: 0.000000
+      query_internal_open_gap_score: 0.000000
+      query_internal_extend_gap_score: 0.000000
+      query_left_open_gap_score: 0.000000
+      query_left_extend_gap_score: 0.000000
+      query_right_open_gap_score: 0.000000
+      query_right_extend_gap_score: 0.000000
+      mode: global
+    
+
+
+
+```python
+alignments = aligner.align("AAACAAA", "AAAGAAA")
+```
+
+
+```python
+len(alignments)
+```
+
+
+
+
+    2
+
+
+
+
+```python
+print(alignments[0])
+```
+
+    target            0 AAAC-AAA 7
+                      0 |||--||| 8
+    query             0 AAA-GAAA 7
+    
+
+
+
+```python
+print(alignments[1])
+```
+
+    target            0 AAA-CAAA 7
+                      0 |||--||| 8
+    query             0 AAAG-AAA 7
+    
+
+
+
+```python
+print(local_alignment)
+```
+
+    target            1 GAAC 5
+                      0 ||-| 4
+    query             0 GA-C 3
+    
+
+
+
+```python
+from Bio import Align
+```
+
+
+```python
+from Bio.Seq import reverse_complement
+```
+
+
+```python
+target = "AAACCC"
+```
+
+
+```python
+query = "AACC"
+```
+
+
+```python
+aligner = Align.PairwiseAligner(mismatch_score= -1, internal_gap_score = -1)
+```
+
+
+```python
+aligner.score(target, query)
+```
+
+
+
+
+    4.0
+
+
+
+
+```python
+aligner.score(target, reverse_complement(query))
+```
+
+
+
+
+    0.0
+
+
+
+
+```python
+aligner.score(target, reverse_complement(query), strand = "-")
+```
+
+
+
+
+    4.0
+
+
+
+
+```python
+
+aligner.score(target, query, strand = "-")
+```
+
+
+
+
+    0.0
+
+
+
+
+```python
+alignments = aligner. align(target, query)
+```
+
+
+```python
+len(alignments)
+```
+
+
+
+
+    1
+
+
+
+
+```python
+#Printing first alignment
+print(alignments[0])
+```
+
+    target            0 AAACCC 6
+                      0 -||||- 6
+    query             0 -AACC- 4
+    
+
+
+
+```python
+print(alignments[0].format("bed"))
+```
+
+    target	1	5	query	4.0	+	1	5	0	1	4,	0,
+    
+
+
+
+```python
+alignments = aligner.align(target, reverse_complement(query), strand = "-")
+```
+
+
+```python
+print(alignments[0].format("bed"))
+```
+
+    target	1	5	query	4.0	-	1	5	0	1	4,	0,
+    
+
+
+
+```python
+alignments = aligner.align(target, query, strand = "-")
+```
+
+
+```python
+len(alignments)
+```
+
+
+
+
+    2
+
+
+
+
+```python
+print(alignments[0])
+```
+
+    target            0 AAACCC----  6
+                      0 ---------- 10
+    query             4 ------GGTT  0
+    
+
+
+
+```python
+print(alignments[1])
+```
+
+    target            0 ----AAACCC  6
+                      0 ---------- 10
+    query             4 GGTT------  0
+    
+
+
+
+```python
+aligner.left_gap_score = -0.5
+```
+
+
+```python
+aligner.right_gap_score = -0.2
+```
+
+
+```python
+aligner.score(target, query)
+```
+
+
+
+
+    3.3
+
+
+
+
+```python
+alignments = aligner.align(target, query)
+```
+
+
+```python
+len(alignments)
+```
+
+
+
+
+    1
+
+
+
+
+```python
+print(alignments[0])
+```
+
+    target            0 AAACCC 6
+                      0 -||||- 6
+    query             0 -AACC- 4
+    
+
+
+
+```python
+alignments = aligner.align(target, reverse_complement(query), strand = "-")
+```
+
+
+```python
+print(alignments)
+```
+
+    <Bio.Align.PairwiseAlignments object at 0x7fe0d82f2cd0>
+
+
+
+```python
+aligner.score(target, reverse_complement(query), strand = "-")
+```
+
+
+
+
+    3.3
+
+
+
+
+```python
+print(alignments[0])
+```
+
+    target            0 AAACCC 6
+                      0 -||||- 6
+    query             4 -AACC- 0
+    
+
+
+
+```python
+aligner.score(target, query, strand = "+")
+```
+
+
+
+
+    3.3
+
+
 
