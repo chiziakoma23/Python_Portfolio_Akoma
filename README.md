@@ -6991,5 +6991,176 @@ display(flann_matches)
 ![output_25_0](https://github.com/user-attachments/assets/834e42b8-6a98-4617-a0b4-e19df3b67598)
 
 
+## Object Detection
+
+```python
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+```
+
+
+```python
+full = cv2.imread('sunflower.jpg')
+```
+
+
+```python
+full = cv2.cvtColor(full, cv2.COLOR_BGR2RGB)
+```
+
+
+```python
+plt.imshow(full)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f265379cf10>
+
+
+
+
+![output_3_1](https://github.com/user-attachments/assets/dcc303a8-abc9-43fd-82c9-0975a3d4616f)
+
+
+
+```python
+test = cv2.imread('flowertest.jpg')
+```
+
+
+```python
+test = cv2.cvtColor(test, cv2.COLOR_BGR2RGB)
+```
+
+
+```python
+plt.imshow(test)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f26536e1a50>
+
+
+
+
+![output_6_1](https://github.com/user-attachments/assets/b02fbf14-bdd6-418d-a9d5-7a0f64788f76)
+
+
+
+```python
+print('Test image shape:', full.shape)
+print('Training image shape:', test.shape)
+```
+
+    Test image shape: (720, 1280, 3)
+    Training image shape: (683, 1024, 3)
+
+
+
+```python
+methods = ['cv2.TM_CCOEFF', 'cv2.TM_CCOEFF_NORMED', 'cv2.TM_CCORR', 'cv2.TM_CCORR_NORMED', 'cv2.TM_SQDIFF', 'cv2.TM_SQDIFF_NORMED']
+```
+
+
+```python
+for m in methods:
+    
+    test_copy = test.copy()
+    method = eval(m)
+    
+    res = cv2.matchTemplate(test_copy, full, method)
+    
+    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
+    
+    if method in [cv2.TM_SQDIFF, cv2.TM_SQDIFF_NORMED]:
+        top_left = min_loc
+        
+    else:
+        top_left = max_loc
+        
+    height, width, channels = full.shape
+    bottom_right = (top_left[0] + width, top_left[1] + height)
+    
+    cv2.rectangle(test_copy, top_left, bottom_right, (255,0,0),10)
+    
+    plt.subplot(121)
+    plt.imshow(res)
+    plt.title("Heatmap of template matching")
+    plt.subplot(122)
+    plt.imshow(test_copy)
+    plt.title('Detection of template')
+    
+    plt.suptitle(m)
+    
+    plt.show()
+    print('\n')
+    print('\n')
+```
+
+
+![output_9_0](https://github.com/user-attachments/assets/aded2e4c-a8cf-4763-a044-647874ca6775)
+
+
+    
+    
+    
+    
+
+
+
+![output_9_2](https://github.com/user-attachments/assets/83e97002-ab2e-43c3-b54c-33710bccd883)
+
+
+    
+    
+    
+    
+
+
+
+![output_9_4](https://github.com/user-attachments/assets/2bfa5c86-06ed-4c4b-a7df-83472b4f3e8a)
+
+
+    
+    
+    
+    
+
+
+
+![output_9_6](https://github.com/user-attachments/assets/e992f5a6-78bb-4cdc-9c15-1114e8a5402f)
+
+
+    
+    
+    
+    
+
+
+
+![output_9_8](https://github.com/user-attachments/assets/e4e0e92f-c8a2-4c96-926e-253ba762857e)
+
+
+    
+    
+    
+    
+
+
+
+![output_9_10](https://github.com/user-attachments/assets/b71b4f93-bdb5-4e31-bb1c-abff30ac8e1c)
+
+
+    
+    
+    
+    
+
 
 
