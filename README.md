@@ -6075,4 +6075,258 @@ show_pic(blended)
 
 ## Open CV Basics PT. 3
 
+```python
+import cv2
+import matplotlib.pyplot as plt
+%matplotlib inline
+```
+
+
+```python
+img = cv2.imread("mushroom.jpg")
+```
+
+
+```python
+#In BGR not RGB, so needs to be corrected
+plt.imshow(img)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f84cce90590>
+
+
+
+
+![output_2_1](https://github.com/user-attachments/assets/5140b1d4-1e91-46f1-8323-33c98d956700)
+
+
+
+```python
+#Converts to RGB
+img1 = cv2.cvtColor(img, cv2. COLOR_BGR2RGB)
+```
+
+
+```python
+#In RGB
+plt.imshow(img1)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f84cc642d90>
+
+
+
+
+![output_4_1](https://github.com/user-attachments/assets/14d51be5-1a23-42ea-a8f9-2506f3dfccc2)
+
+
+
+```python
+#BGR to HSV
+img2 = cv2.cvtColor(img, cv2. COLOR_BGR2HSV)
+```
+
+
+```python
+
+plt.imshow(img2)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f84c89d9150>
+
+
+
+
+![output_6_1](https://github.com/user-attachments/assets/a5c61cc2-5c62-4b9b-b928-d238e6396e96)
+
+
+
+```python
+#Convert to HLS format. Psychadelic effect (love). 
+img3 = cv2.cvtColor(img, cv2. COLOR_BGR2HLS)
+```
+
+
+```python
+plt.imshow(img3)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f84c8939e90>
+
+
+
+
+![output_8_1](https://github.com/user-attachments/assets/ef421056-7d4f-4953-9a83-50608493d4cf)
+
+
+
+```python
+img1 = cv2.imread('Do_not_disturb.jpeg')
+img2 = cv2.imread('mushroom.jpg')
+```
+
+
+```python
+plt.imshow(img1)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f84c8922c90>
+
+
+
+
+![output_10_1](https://github.com/user-attachments/assets/8d2526e2-b342-4dc6-9b8e-048a8a5561b9)
+
+
+
+```python
+#Converts from BGR to RGB
+img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2RGB)
+img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2RGB)
+```
+
+
+```python
+plt.imshow(img1)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f84c8889dd0>
+
+
+
+
+![output_12_1](https://github.com/user-attachments/assets/846ba97e-a69f-4695-8259-13f5b74e6345)
+
+
+
+```python
+plt.imshow(img2)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f84c87f1f10>
+
+
+
+
+![output_13_1](https://github.com/user-attachments/assets/333803aa-c090-46d6-9bac-f3613430e558)
+
+
+
+```python
+#Resizes both images
+img1 = cv2.resize(img1, (1200, 1200))
+img2 = cv2.resize(img2, (1200, 1200))
+```
+
+
+```python
+alpha = 0.5
+beta = 0.5
+```
+
+
+```python
+#blended both images together
+blended = cv2. addWeighted(img1, alpha, img2, beta, gamma=0)
+```
+
+
+```python
+plt.imshow(blended)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f84c87e3d50>
+
+
+
+
+![output_17_1](https://github.com/user-attachments/assets/a6f5d4b6-9885-4205-a75e-54ab17bb4807)
+
+
+
+```python
+#Chnages the blending weight for both images
+alpha = 0.2
+beta = 0.8
+
+blended1 = cv2.addWeighted(img1, alpha, img2, beta, 0)
+plt.imshow(blended1)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f84c86b72d0>
+
+
+
+
+![output_18_1](https://github.com/user-attachments/assets/d93fd6d6-aed1-4db2-bbc8-ebed5404526b)
+
+
+
+```python
+
+img1 = cv2.imread('Do_not_disturb.jpeg')
+img2 = cv2.imread('mushroom.jpg')
+
+img1 = cv2.cvtColor (img1, cv2.COLOR_BGR2RGB) 
+img2 = cv2.cvtColor (img2, cv2.COLOR_BGR2RGB)
+
+img1 = cv2.resize(img1, (200,200))
+```
+
+
+```python
+
+large_img = img2 
+small_img = img1 
+
+x_offset = 0 
+y_offset = 0 
+
+x_end = x_offset + small_img. shape[1] 
+y_end = y_offset + small_img. shape[0] 
+
+large_img[y_offset:y_end, x_offset:x_end] = small_img
+
+plt.imshow(large_img)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f84c862e150>
+
+
+
+
+![output_20_1](https://github.com/user-attachments/assets/10e86fc5-9125-4d3c-9733-9d3da2e1242c)
+
+
+## Corner Detection
 
