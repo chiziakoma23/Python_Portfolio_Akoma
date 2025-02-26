@@ -6330,3 +6330,453 @@ plt.imshow(large_img)
 
 ## Corner Detection
 
+```python
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+```
+
+
+```python
+#Converts BGR to RGB
+flat_chess = cv2.imread('greenchess.jpeg')
+flat_chess = cv2.cvtColor(flat_chess, cv2.COLOR_BGR2RGB)
+plt.imshow(flat_chess)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f89223efb90>
+
+
+
+
+![output_1_1](https://github.com/user-attachments/assets/ccac26aa-a458-45bf-bb6f-8354ba6c100f)
+
+
+
+```python
+#Converts image to grayscale
+gray_flat_chess = cv2.cvtColor(flat_chess, cv2.COLOR_BGR2GRAY)
+plt.imshow(gray_flat_chess, cmap = "gray")
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f89222e89d0>
+
+
+
+
+![output_2_1](https://github.com/user-attachments/assets/f06bed1f-c624-4ddd-af1c-1286cca510a9)
+
+
+
+```python
+#BGR to RGB
+real_chess = cv2.imread("realchess.jpeg")
+real_chess = cv2.cvtColor(real_chess, cv2.COLOR_BGR2RGB)
+```
+
+
+```python
+plt.imshow(real_chess)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f89222517d0>
+
+
+
+
+![output_4_1](https://github.com/user-attachments/assets/1508efba-9441-4904-a325-f76a72fc4ce2)
+
+
+
+```python
+#Convert RGB to grayscale
+gray_real_chess = cv2.cvtColor(real_chess, cv2.COLOR_BGR2GRAY)
+plt.imshow(gray_real_chess, cmap = "gray")
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f892219b450>
+
+
+
+
+![output_5_1](https://github.com/user-attachments/assets/829dd936-f4a0-4ae3-8625-c77dc953be17)
+
+
+
+```python
+#Using Harrist Corner Detection. Converts grayscale image to floating point array. Dilates the detected corners
+gray = np.float32(gray_flat_chess)
+dst = cv2.cornerHarris(src = gray, blockSize = 2, ksize = 3, k = 0.04)
+
+dst = cv2.dilate(dst, None)
+```
+
+
+```python
+#Make corners red on the chessboard
+flat_chess[dst>0.01*dst.max()] = [255,0,0]
+
+plt.imshow(flat_chess)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f89201548d0>
+
+
+
+
+![output_7_1](https://github.com/user-attachments/assets/419f8efd-6eec-4720-a4e6-e68ac6f19e0a)
+
+
+
+```python
+#Harris Corner Detection on real chessboard. As well as floating array and dilation. Make corners red
+gray = np.float32(gray_real_chess)
+dst = cv2. cornerHarris(src = gray, blockSize = 2, ksize=3, k=0.04)
+dst = cv2.dilate(dst,None)
+
+real_chess[dst>0.01*dst.max()] = [255, 0, 0]
+
+plt.imshow(real_chess)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f89200c2190>
+
+
+
+
+![output_8_1](https://github.com/user-attachments/assets/721c6502-82b4-4195-b096-c7001ca2e6ef)
+
+
+
+```python
+#Shi-Tomasi Corner Detection
+
+corners = cv2.goodFeaturesToTrack(gray_flat_chess, 64, 0.01, 10)
+```
+
+
+```python
+#Convert floating point to integers
+corners = np.int0(corners)
+
+for i in corners:
+    x,y = i.ravel()
+    cv2.circle(flat_chess, (x,y),3,(255,0,0), -1)
+
+plt.imshow(flat_chess)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f8920027510>
+
+
+
+
+![output_10_1](https://github.com/user-attachments/assets/d0ecb31d-a26a-4ea4-a53c-a387c470e8d5)
+
+
+
+```python
+corners = cv2.goodFeaturesToTrack(gray_real_chess, 100, 0.01, 10)
+
+corners = np.int0(corners)
+
+for i in corners:
+    x,y = i.ravel()
+    cv2.circle(real_chess, (x,y),3,(0,255,0), -1)
+
+plt.imshow(real_chess)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7f89127ef910>
+
+
+
+
+![output_11_1](https://github.com/user-attachments/assets/cb55e800-eb2b-4201-bb86-69277b988485)
+
+
+## Edge Detection
+
+```python
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+```
+
+
+```python
+#image in BGR
+img = cv2.imread("mushroom.jpg")
+plt.imshow(img)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7ff53e5990d0>
+
+
+
+
+![output_1_1](https://github.com/user-attachments/assets/029f51e0-cb8a-4d48-b31b-ba69ea75cfd7)
+
+
+
+```python
+#Setting the edges by detecting threshold (127)
+edges = cv2.Canny(image =img, threshold1 = 127, threshold2 = 127)
+
+plt.imshow(edges)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7ff53d44b4d0>
+
+
+
+
+![output_2_1](https://github.com/user-attachments/assets/e83b4ee4-8be4-4012-ab6b-adfb0e8a1180)
+
+
+
+```python
+#Finding median color value
+med_value = np.median(img)
+med_value
+```
+
+
+
+
+    67.0
+
+
+
+
+```python
+#Adjusting lower and upper values of threshold
+lower = int(max(0, 6.7*med_value))
+upper = int(min(255,1.3*med_value))
+
+edges = cv2.Canny(img, threshold1 = lower, threshold2 = upper)
+
+plt.imshow(edges)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7ff5357a2e90>
+
+
+
+
+![output_4_1](https://github.com/user-attachments/assets/fc9c1cba-5b17-4547-94fd-3f1306fcf60c)
+
+
+
+```python
+#Increases upper threshold
+egdes = cv2.Canny(image = img, threshold1 = lower, threshold2 = upper +100)
+
+plt.imshow(edges)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7ff535696e10>
+
+
+
+
+![output_5_1](https://github.com/user-attachments/assets/71b36727-7e7a-4eaf-903b-4899b400ebb5)
+
+
+
+```python
+#Using blur to reduce noise
+blurred_img = cv2.blur(img, ksize = (5,5))
+
+edges = cv2.Canny(image=blurred_img,
+                 threshold1 = lower,
+                 threshold2 = upper)
+
+plt.imshow(edges)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7ff535600d90>
+
+
+
+
+![output_6_1](https://github.com/user-attachments/assets/47b92c75-3574-4d80-a5c8-0fc36206df94)
+
+
+
+```python
+#Detecting edge. Increasing k size
+blurred_img = cv2.blur(img, ksize = (7,7))
+
+edges = cv2.Canny(image=blurred_img,
+                 threshold1 = lower,
+                 threshold2 = upper)
+
+plt.imshow(edges)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7ff5355e8b10>
+
+
+
+
+![output_7_1](https://github.com/user-attachments/assets/bc1cb449-2b87-48e9-a04e-68a2ff6f53e1)
+
+
+
+```python
+#increasing upper threshold by 50
+blurred_img = cv2.blur(img, ksize = (5,5))
+
+edges = cv2.Canny(image=blurred_img,
+                 threshold1 = lower,
+                 threshold2 = upper + 50)
+
+plt.imshow(edges)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7ff535555910>
+
+
+
+
+![output_8_1](https://github.com/user-attachments/assets/8d160e7f-916a-4b89-b3cb-b19918d5bb88)
+
+
+
+```python
+#increasing upper threshold by 100
+blurred_img = cv2.blur(img, ksize = (5,5))
+
+edges = cv2.Canny(image=blurred_img,
+                 threshold1 = lower,
+                 threshold2 = upper + 100)
+
+plt.imshow(edges)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7ff5354c5690>
+
+
+
+
+![output_9_1](https://github.com/user-attachments/assets/4b1284e8-3a5f-4b74-b2d7-f2bbb2d86541)
+
+
+
+```python
+blurred_img = cv2.blur(img, ksize = (7,7))
+
+edges = cv2.Canny(image=blurred_img,
+                 threshold1 = lower,
+                 threshold2 = upper + 50)
+
+plt.imshow(edges)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7ff5354b5410>
+
+
+
+
+![output_10_1](https://github.com/user-attachments/assets/727a5e2f-f683-4786-8f43-b677be5e1512)
+
+
+
+```python
+blurred_img = cv2.blur(img, ksize = (7,7))
+
+edges = cv2.Canny(image=blurred_img,
+                 threshold1 = lower,
+                 threshold2 = upper + 60)
+
+plt.imshow(edges)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7ff535416f50>
+
+
+
+
+![output_11_1](https://github.com/user-attachments/assets/ea7ef543-3b6b-4125-9fe1-4e04b37c5470)
+
+
+
+```python
+blurred_img = cv2.blur(img, ksize = (8,8))
+
+edges = cv2.Canny(image=blurred_img,
+                 threshold1 = lower,
+                 threshold2 = upper)
+
+plt.imshow(edges)
+```
+
+
+
+
+    <matplotlib.image.AxesImage at 0x7ff535381c50>
+
+
+
+
+![output_12_1](https://github.com/user-attachments/assets/8714c960-658c-4002-8a94-7dea9e68538a)
+
+
+## Feature Match
