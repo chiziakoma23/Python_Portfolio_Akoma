@@ -6780,3 +6780,216 @@ plt.imshow(edges)
 
 
 ## Feature Match
+
+```python
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+```
+
+
+```python
+def display(img, cmap = 'gray'):
+    fig = plt.figure(figsize = (12,10))
+    ax = fig.add_subplot(111)
+    ax.imshow(img, cmap = 'gray')
+```
+
+
+```python
+#Image in grayscale
+apple_jacks = cv2.imread("applejacks.jpg", 0)
+display(apple_jacks)
+```
+
+
+![output_2_0](https://github.com/user-attachments/assets/8369bf9e-1c05-4d5d-837d-65dd33201e8c)
+
+
+
+```python
+#Image in grayscale
+cereals = cv2.imread('allcereal.jpeg', 0)
+display(cereals)
+```
+
+
+![output_3_0](https://github.com/user-attachments/assets/7e297f3f-d54c-4609-9f21-609b1d0b9440)
+
+
+
+```python
+#ORB Descriptor detector
+orb = cv2.ORB_create()
+
+kp1,des1 = orb.detectAndCompute(apple_jacks, mask=None)
+kp2,des2 = orb.detectAndCompute(cereals, mask=None)
+```
+
+
+```python
+#Brute-Force Matcher. For matches
+bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck = True)
+matches= bf.match(des1,des2)
+```
+
+
+```python
+matches = sorted(matches, key = lambda x:x.distance)
+```
+
+
+```python
+apple_jacks_matches = cv2.drawMatches(apple_jacks, kp1, cereals, kp2, matches[:25], None, flags = 2)
+
+```
+
+
+```python
+display(apple_jacks_matches)
+```
+
+
+![output_8_0](https://github.com/user-attachments/assets/73ba1948-59e5-4bab-8429-bdf3d844b516)
+
+
+
+```python
+sift = cv2.SIFT_create()
+```
+
+
+```python
+kp1, des1 = sift.detectAndCompute(apple_jacks, None)
+kp2, des2 = sift.detectAndCompute(cereals, None)
+```
+
+
+```python
+# Finds best matches for discriptors from set
+```
+
+
+```python
+bf = cv2.BFMatcher()
+matches = bf.knnMatch(des1, des2, k=2)
+```
+
+
+```python
+good = []
+
+for match1, match2 in matches:
+    if match1.distance < 0.75*match2.distance:
+        good.append([match1])
+```
+
+
+```python
+print('length of total matches:', len(matches))
+print('length of good matches:', len(good))
+```
+
+    length of total matches: 13131
+    length of good matches: 218
+
+
+
+```python
+sift_matches = cv2.drawMatchesKnn(apple_jacks, kp1, cereals, kp2, good, None, flags = 2)
+display(sift_matches)
+```
+
+
+![output_15_0](https://github.com/user-attachments/assets/8828745e-f5f7-4155-aa84-9138500ec3e1)
+
+
+
+```python
+kp1, des1 = sift.detectAndCompute(apple_jacks, None)
+kp2, des2 = sift.detectAndCompute(cereals, None)
+```
+
+
+```python
+flann_index_KDtree = 0
+index_params = dict(algorithm=flann_index_KDtree, trees = 5)
+search_params = dict(checks=50)
+```
+
+
+```python
+flann = cv2.FlannBasedMatcher(index_params, search_params)
+
+matches = flann.knnMatch(des1, des2, k=2)
+
+good = []
+
+for match1, match2 in matches:
+    if match1.distance < 0.75*match2.distance:
+        good.append([match1])
+```
+
+
+```python
+flann_matches = cv2.drawMatchesKnn(apple_jacks, kp1, cereals, kp2, good, None, flags = 0)
+display(flann_matches)
+```
+
+
+![output_19_0](https://github.com/user-attachments/assets/50b85e6a-a37c-48f7-ad50-563e0eebd0a2)
+
+
+
+```python
+sift = cv2.SIFT_create()
+
+kp1, des1 = sift.detectAndCompute(apple_jacks, None)
+kp2, des2 = sift.detectAndCompute(cereals, None)
+```
+
+
+```python
+flann_index_KDtree = 0
+index_params = dict(algorithm= flann_index_KDtree, trees = 5)
+search_param = dict(checks = 50)
+```
+
+
+```python
+flann = cv2.FlannBasedMatcher(index_params, search_params)
+
+matches = flann.knnMatch(des1, des2, k = 2)
+```
+
+
+```python
+matchesMask = [[0,0] for i in range(len(matches))]
+```
+
+
+```python
+for i, (match1, match2) in enumerate(matches):
+    if match1.distance <0.75*match2.distance:
+        matchesMask[i] = [1,0]
+        
+draw_params = dict(matchColor = (0,255,0), 
+                  singlePointColor = (255,0,0),
+                  matchesMask = matchesMask,
+                  flags = 0)
+```
+
+
+```python
+flann_matches = cv2.drawMatchesKnn(apple_jacks, kp1, cereals, kp2, matches, None, **draw_params)
+
+display(flann_matches)
+```
+
+
+![output_25_0](https://github.com/user-attachments/assets/834e42b8-6a98-4617-a0b4-e19df3b67598)
+
+
+
+
